@@ -1,0 +1,31 @@
+#summary Building the SLOscope code
+
+= Introduction =
+
+The SLOscope source was developed on a Linux box running Fedora.  However, the tools used means that it should be seamlessly buildable on each of these platforms : 
+
+  * Linux
+    * Fedora
+    * Ubuntu
+    * etc...
+  * MacOS
+  * Windows
+
+
+= Building the project : Generic =
+
+The prerequisite for doing these steps is an installation of 'cmake'.
+
+ # Go to the build directory
+ # execute 'cmake ..'
+ # execute 'make'
+
+To run the software, just type one of the following (in the build directory) :
+  * usb-programmer-config
+  * SLOscope
+
+
+= Specific Instructions : Linux (Fedora) =
+
+Actually, the above works immediately.  Installing cmake needs `yum install cmake`.
+
