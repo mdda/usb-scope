@@ -1,6 +1,6 @@
 #summary Modifying (and hopefully improving) the software
 
-= Modifying the GUI : Generic =
+== Modifying the GUI : Generic ==
 For modifying the GUI, you'll need wxglade installed.  This has the capability of modifying the C++ source code in-place, without destroying the customisation that was developed 'on top'.
 
  # Launch 'wxglade src/USBconfig.wxg' or 'wxglade src/SLOscope.wxg' 
@@ -8,7 +8,7 @@ For modifying the GUI, you'll need wxglade installed.  This has the capability o
  # Rebuild
 
 
-== Developing on Linux ==
+=== Developing on Linux ===
 
 To build and (if successful) run in the ./build directory : 
 `make && ./SLOscope`
