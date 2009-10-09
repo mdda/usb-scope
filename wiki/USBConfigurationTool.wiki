@@ -1,0 +1,16 @@
+#summary Command-line options for the configuration tool
+
+== Introduction ==
+
+{{{
+$ ./usb-programmer-config --help
+Usage: usb-programmer-config [-h] [-g] [-q] [-d] [-s <num>] [-p <num>] [-a <str>] [-b <str>]
+  -h, --help        	displays help on the command line parameters
+  -g, --gui         	enables the GUI (not yet)
+  -q, --quiet       	don't show device settings
+  -d, --dump        	view current settings in parsable format
+  -s, --slo=<num>   	set SLO scope state: 0=off, 1=2A, 2=1A.1D
+  -p, --period=<num>	set SLO scope period (new reading every (period+1)/12 microseconds, normal=539)
+  -a, --line_a=<str>	set line A state : { i|input, 0|low, 1|high }
+  -b, --line_b=<str>	set line B state : { i|input, 0|low, 1|high }
+}}}
