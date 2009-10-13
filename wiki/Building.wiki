@@ -18,13 +18,13 @@ Once you've managed to build the project on your platform (especially if it's no
 
 The prerequisite for doing these steps is an installation of 'cmake'.
 
- # Go to the build directory
- # execute 'cmake ..'
- # execute 'make'
+ # Go to the build directory : `cd build`
+ # execute `cmake ..` - this will create a suitable Makefile (v. cool)
+ # execute `make`
 
 To run the software, just type one of the following (in the build directory) :
-  * usb-programmer-config
-  * SLOscope
+  * `usb-programmer-config`
+  * `SLOscope`
 
 
 === Specific Instructions : Linux (Fedora) ===
