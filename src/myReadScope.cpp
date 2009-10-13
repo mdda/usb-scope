@@ -126,7 +126,7 @@ void myReadScope::readBlock() {
   s_mutexRawDataExtents.Unlock();
 
   
-  if(false) { // Here is the real data read
+  if(true) { // Here is the real data read
     lib_read_slo_data(dev, raw_data);
   }
   else {  // This is just for debugging...
