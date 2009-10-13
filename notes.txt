@@ -1,0 +1,63 @@
+*DONE* Create a cmake file
+
+*DONE* Add command line options
+*DONE* Add usb utility function for finding device
+
+*DONE* Add SLOscope app, rename USBconfig to usb-programmer-config
+*DONE* Create look-alike GUI for SLOscope
+
+*DONE* Find wxDC of each of the graph areas
+*DONE* Create graph in a generic wxDC
+
+*DONE* Update GUI to allow Right-click Trigger, fix persistence, larger 'Capture button'
+
+*DONE* Multi-threading - simple test
+*DONE* Raw data buffer with lockable [from, next) extents
+*DONE* AllowToRun and IsNowRunning semaphores : please_pause & i_am_paused
+
+*DONE* Is some data off-screen ?  Check wrap-arounds - Fixed 
+*DONE* OnScreen [From, Next) for LongScope
+*DONE* Shift the onscreen to most recent, plus plot new points
+
+*DONE* Continuous refresh of LongScope
+*DONE* OnUpdate should compare the onscreen and rawdata extents...
+
+*DONE* Add some border pixels to LongScope, remove spacer between LongScope and Detail Scope
+*DONE* Make Run vs Examine pause the data capture properly
+
+*DONE* OnScreen [From, Next) for DetailScope
+
+*DONE* Set up Google code project page : http://code.google.com/p/usb-scope/
+
+*DONE* Grab mouse events in LongScope & Overall frame (so that DetailScope can be updated)
+*DONE* Grab mouse events in DetailScope & Overall frame (so that errm ..)
+
+*DONE* Zooming of LongScope into DetailScope
+*DONE* Grabbing of data from device
+
+*DONE* Draw DetailScope time axis properly
+*DONE* Draw DetailScope Voltage axes starting at zero
+
+Upload to SVN as a start
+
+Draw DetailScope Voltage axes with appropriate scaling
+
+Colour picker for A and B lines (have already centralized wxPen definitions in Frame)
+A & B i|0|1 selector
+Save as PNG dialog (logic should be 'simple' since DCs work across devices)
+Persistence
+Right-Click context menu for DetailScope : Set triggers
+
+
+Wire up the device to something, to see actual data
+
+
+
+
+
+Remove all flicker from updates
+
+
+
+
+

@@ -1,0 +1,22 @@
+<root>
+	<file>./notes.txt</file>
+	<file>./CMakeLists.txt</file>
+	<file>./build/FindLibUSB.cmake</file>
+	<file>./../../../../../usr/include/usb.h</file>
+	<group name='USBconfig' expanded='TRUE'>
+		<file>./src/USBconfig.h</file>
+		<file>./src/USBconfig.cpp</file>
+	</group>
+	<group name='SLOscope' expanded='TRUE'>
+		<file>./src/SLOscope.h</file>
+		<file>./src/SLOscope.cpp</file>
+		<file>./src/myDetailScope.cpp</file>
+		<file>./src/myLongScope.cpp</file>
+		<file>./src/myReadScope.cpp</file>
+	</group>
+	<group name='utils' expanded='TRUE'>
+		<file>./src/usbprogrammer.h</file>
+		<file>./src/usb_utils.cpp</file>
+		<file>./src/usb_utils.h</file>
+	</group>
+</root>
