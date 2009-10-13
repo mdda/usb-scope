@@ -19,7 +19,8 @@ Once you've managed to build the project on your platform (especially if it's no
 The prerequisite for doing these steps is an installation of 'cmake'.
 
  # Go to the build directory : `cd build`
- # To create a suitable Makefile  v. cool), execute : `cmake ..` - 
+ # To create a suitable Makefile  v. cool), execute : `cmake ..`
+   # Did you type that in correctly?  The 'cmake' is followed by space and two dots...
  # Finally, execute : `make`
 
 To run the software, just type one of the following (still in the build directory) :
