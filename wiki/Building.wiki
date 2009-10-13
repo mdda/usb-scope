@@ -10,6 +10,9 @@ The SLOscope source was developed on a Linux box running Fedora.  However, the t
     * etc...
   * MacOS
   * Windows
+    * Microsoft compilers
+    * GNU compilers
+    * etc...
 
 Once you've managed to build the project on your platform (especially if it's not Linux), please let us know your experiences!  Ideally, we'll be able to host installable binaries here too, so that _regular users_ of the Windows and Mac platforms can install it quickly too.
 
@@ -30,4 +33,5 @@ To run the software, just type one of the following (still in the build director
 
 === Specific Instructions : Linux (Fedora) ===
 
-Actually, the above works immediately.  Installing cmake needs `yum install cmake`.
+To installing cmake just type : `yum install cmake`.
+And then the above works immediately - which shouldn't be surprising, since it was developed on Fedora machines.
