@@ -10,5 +10,7 @@ For modifying the GUI, you'll need wxglade installed.  This has the capability o
 
 === Developing on Linux ===
 
+On Fedora, to install wxGlade : `yum install wxGlade`
+
 To build and (if successful) run in the ./build directory : 
 `make && ./SLOscope`
