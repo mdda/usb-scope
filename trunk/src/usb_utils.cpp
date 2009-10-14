@@ -3,6 +3,32 @@
 #include "usb_utils.h"
 
 /*
+
+// PROBLEM : 
+    // Hmm : on Linux madison 2.6.30.8-64.fc11.x86_64 #1 SMP Fri Sep 25 04:43:32 EDT 2009 x86_64 x86_64 x86_64 GNU/Linux
+    //   - needs to be root to read device descriptors properly : What is fix ??
+   
+    // And : on 
+    //   - everything is hunky-dory.
+
+// RESOLUTION : 
+
+The following file does the trick for Linux Ubuntu 7.10:
+
+# udev rules file for atmel usb devices (for udev 0.98 version)
+#
+SUBSYSTEM!="usb_device", GOTO="pololu_rules_end"
+ACTION!="add", GOTO="atmel_rules_end"
+
+ATTRS{idVendor}=="1ffb", ATTRS{idProduct}=="0081", MODE="0660", GROUP="plugdev"
+
+LABEL="pololu_rules_end" 
+
+*/
+
+
+
+/*
  * Find a particular device
  *
  *  vendor  - the vendor id
