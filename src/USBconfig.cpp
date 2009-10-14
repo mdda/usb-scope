@@ -118,12 +118,6 @@ bool USBconfig::OnCmdLineParsed(wxCmdLineParser& parser) {
   usb_dev_handle *handle=usb_open(dev);
   
   if(verbose) {
-    // Hmm : on Linux madison 2.6.30.8-64.fc11.x86_64 #1 SMP Fri Sep 25 04:43:32 EDT 2009 x86_64 x86_64 x86_64 GNU/Linux
-    //   - needs to be root to read device descriptors properly : What is fix ??
-   
-    // And : on 
-    //   - everything is hunky-dory.
-
     // usb_set_debug(2);
   }
 
