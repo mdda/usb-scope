@@ -21,7 +21,7 @@ struct usb_device *lib_find_usb_device( int vendor, int product ) {
 
 	for (struct usb_bus *bus = busses; bus; bus = bus->next) {
   for (struct usb_device *dev = bus->devices; dev; dev = dev->next) {
-   // printf("lib_find_usb_device : (vendor=%04x, product=%04x) \n", dev->descriptor.idVendor, dev->descriptor.idProduct);
+   //printf("lib_find_usb_device : (vendor=%04x, product=%04x) \n", dev->descriptor.idVendor, dev->descriptor.idProduct);
    if((dev->descriptor.idVendor == vendor) && (dev->descriptor.idProduct == product)) {
     return dev; // This appears to be a pointer into a global structure - no need to 'free'
    }
