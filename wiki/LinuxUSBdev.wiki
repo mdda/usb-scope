@@ -81,4 +81,4 @@ Test this with : `udevtest /bus/usb/devices/7-1`, if the device is under `/dev/b
 
 === Complaint ===
 
-And, yes, I'm aware that this should be done with ConsoleKit and HAL (and / or DeviceKit).  But don't you think I would have been able to figure it out if it were documented properly ??  YMMV.
+And, yes, I'm aware that this should be done with !ConsoleKit and HAL (and / or !DeviceKit).  But don't you think I would have been able to figure it out if it were documented properly ??  YMMV.
