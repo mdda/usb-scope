@@ -28,6 +28,8 @@ The prerequisite for doing these steps is an installation of 'cmake', and 'svn'.
    * Did you type that in correctly?  The 'cmake' is followed by space and two dots...
  # Finally, execute : `make`
 
+On Linux, because of it's security model, you'll have to inform the usb device manager that ordinary users should have permission to write to the device (see [LinuxUSBdev]).
+
 To run the software, just type one of the following (still in the build directory) :
   * `usb-programmer-config`
   * `SLOscope`
@@ -42,4 +44,4 @@ The `cmake ..` automatically detects the installed software, so that it can buil
 
 Somehow, the correct libusb was already installed.
 
-Then, the rest of the build / run process works seamlessly.
+Then, the rest of the build / run process works seamlessly (after applying the [LinuxUSBdev] magic).
