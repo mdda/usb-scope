@@ -44,19 +44,41 @@ $ usb-programmer-config
 Works beautifully...
 }}}
 
-= Details - and permanent fix =
+= Details - and permanent fix  *work in progress* =
 
 Need to create a 'udev rule' to assign the permissions when the device is plugged in.
 
-Create a file called `/etc/udev/rules.d/45-pololu.rules` that contains : (does the trick for Linux Ubuntu 7.10, and Fedora 11 for sure) :
+Create a file called `/etc/udev/rules.d/65-pololu.rules` that contains :
 
+
+(for Linux Ubuntu 7.10 - based on what I've read) :
 {{{
 # udev rules file for Pololu SLOscope USB device (for udev 0.98 version)
-#
+
 SUBSYSTEM!="usb_device", GOTO="pololu_rules_end"
 ACTION!="add", GOTO="pololu_rules_end"
 
-ATTRS{idVendor}=="1ffb", ATTRS{idProduct}=="0081", MODE="0660", GROUP="plugdev"
+ATTRS{idVendor}=="1ffb", ATTRS{idProduct}=="0081", MODE="0666"
 
 LABEL="pololu_rules_end" 
 }}}
+
+(for Fedora 11 - this is tested, and really works) :
+{{{
+# udev rules file for Pololu SLOscope USB device (for udev 0.98 version)
+
+SUBSYSTEM!="usb", GOTO="pololu_rules_end"
+ACTION!="add", GOTO="pololu_rules_end"
+
+SYSFS{idVendor}=="1ffb", SYSFS{idProduct}=="0081", MODE="0666"
+
+LABEL="pololu_rules_end" 
+}}}
+
+
+Test this with : `udevtest /bus/usb/devices/7-1`, if the device is under `/dev/bus/usb/007` ...
+
+
+=== Complaint ===
+
+And, yes, I'm aware that this should be done with ConsoleKit and HAL (and / or DeviceKit).  But don't you think I would have been able to figure it out if it were documented properly ??  YMMV.
