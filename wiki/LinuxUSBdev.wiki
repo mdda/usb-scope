@@ -1,0 +1,51 @@
+#summary Getting user access to the USB device
+= Problem =
+
+Since the Linux kernel doesn't 'know' the Pololu device, it doesn't give regular users privileges to write to it.
+
+= Details - and quick fix =
+
+{{{
+$ usb-programmer-config
+Gives meaning-less, and inconsistent results for the HW version (for instance)
+}}}
+
+while (doing the same as root) :
+{{{
+# usb-programmer-config
+Look different (and correct)
+}}}
+
+Check the device permissions :
+
+{{{
+# lsusb 
+Bus 005 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 004 Device 003: ID 046d:c03d Logitech, Inc. M-BT96a Pilot Optical Mouse
+Bus 004 Device 002: ID 413c:2003 Dell Computer Corp. Keyboard
+Bus 004 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 008 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 006 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 007 Device 011: ID 1ffb:0081  
+Bus 007 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 003 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+
+[root@madison build]# ls -l /dev/bus/usb/007/011 
+crw-rw-r-- 1 root root 189, 778 2009-10-13 20:59 /dev/bus/usb/007/011
+
+[root@madison build]# chmod 666 /dev/bus/usb/007/011 
+}}}
+
+Now : 
+{{{
+$ usb-programmer-config
+Works beautifully...
+}}}
+
+= Details - and permanent fix =
+
+Need to create a 'udev rule' to assign the permissions when the device is plugged in.
+
+
