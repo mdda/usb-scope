@@ -14,3 +14,17 @@ Usage: usb-programmer-config [-h] [-g] [-q] [-d] [-s <num>] [-p <num>] [-a <str>
   -a, --line_a=<str>	set line A state : { i|input, 0|low, 1|high }
   -b, --line_b=<str>	set line B state : { i|input, 0|low, 1|high }
 }}}
+
+NB: If the usb-programmer-config complains : 'USB error: error sending control message: Operation not permitted', then try rerunning it as root - something funky was happening on 1 of my machines without that.
+
+{{{
+# ./usb-programmer-config --slo=1 --line_a=i --line_b=0
+usb_set_debug: Setting debugging level to 2 (on)
+Pololu USB programmer : HW version 15, SW version 2.10
+  SLOscope mode : 2 analog inputs, 10KHz
+    Sampling every 45.000 us
+    Reference Voltage (1.024V) registers : 14400
+    Direction of external lines :
+      Line A : Input
+      Line B : Ouput Low
+}}}
