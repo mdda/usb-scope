@@ -13,14 +13,29 @@
 
 // RESOLUTION : 
 
-The following file does the trick for Linux Ubuntu 7.10:
+Create a file called /etc/udev/rules.d/65-pololu.rules that contains : (does the trick for Linux Ubuntu 7.10)
 
-# udev rules file for atmel usb devices (for udev 0.98 version)
-#
+
+
+## ubuntu version
+# udev rules file for Pololu SLOscope USB device (for udev 0.98 version)
+
 SUBSYSTEM!="usb_device", GOTO="pololu_rules_end"
-ACTION!="add", GOTO="atmel_rules_end"
+ACTION!="add", GOTO="pololu_rules_end"
 
-ATTRS{idVendor}=="1ffb", ATTRS{idProduct}=="0081", MODE="0660", GROUP="plugdev"
+ATTRS{idVendor}=="1ffb", ATTRS{idProduct}=="0081", MODE="0666"
+
+LABEL="pololu_rules_end" 
+
+--- or ---
+
+## Fedora version
+# udev rules file for Pololu SLOscope USB device (for udev 0.98 version)
+
+SUBSYSTEM!="usb", GOTO="pololu_rules_end"
+ACTION!="add", GOTO="pololu_rules_end"
+
+SYSFS{idVendor}=="1ffb", SYSFS{idProduct}=="0081", MODE="0666"
 
 LABEL="pololu_rules_end" 
 
