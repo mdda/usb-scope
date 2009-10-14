@@ -15,7 +15,7 @@ Usage: usb-programmer-config [-h] [-g] [-q] [-d] [-s <num>] [-p <num>] [-a <str>
   -b, --line_b=<str>	set line B state : { i|input, 0|low, 1|high }
 }}}
 
-NB: If the usb-programmer-config complains : 'USB error: error sending control message: Operation not permitted', then try rerunning it as root - something funky was happening on one of my machines without that.
+NB: If the usb-programmer-config complains : 'USB error: error sending control message: Operation not permitted', then try rerunning it as root - something funky was happening on one of my machines without that.  This may be a 'udev' problem (to do with the permissions that linux gives the device nodes when it finds them).  More info soon.
 
 {{{
 # ./usb-programmer-config --slo=1 --line_a=i --line_b=0
