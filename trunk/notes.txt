@@ -58,6 +58,16 @@ Wire up the device to something, to see actual data
 Remove all flicker from updates
 
 
+Useful Links :
+
+http://libusb.sourceforge.net/doc/function.usbopen.html
+http://docs.wxwidgets.org/trunk/classwx_auto_buffered_paint_d_c.html
+http://wiki.wxwidgets.org/Catching_key_events_globally
+http://wiki.wxwidgets.org/Custom_Events_Tutorial
+http://docs.wxwidgets.org/trunk/classwx_mouse_event.html#af32bfc85d51a565b1a9b89189292325
+http://audacity.cvs.sourceforge.net/viewvc/audacity/audacity-src/src/TrackPanel.cpp?revision=1.477&view=markup
+http://www.blitzbasic.com/Community/posts.php?topic=75367
+http://www.codase.com/search/display?file=L2dlbnRvbzIvdmFyL3RtcC9yZXBvcy9jb2Rhc2UuYy96cGhvdG8tMS4yLXIxL3dvcmsvenBob3RvLTEuMi93eHpwaG90by5jcHA=&lang=c%2B%2B#
 
 
 
