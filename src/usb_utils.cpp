@@ -164,10 +164,10 @@ void lib_set_slo_scope_state( struct usb_device *dev, int state ) {  //
 }
 */
 
-void lib_explain_slo_data(char *data) {
- printf("Missing = %d, Frame = %d\n  Data : ", data[0], data[1]);
+void lib_explain_slo_data(int retval,  char *data) {
+ printf("ret=%3d, Missing %3d, Frame %3d, Data : ", retval, (int)(unsigned char)data[0], (int)(unsigned char)data[1]);
  for(int i=2; i<SLOSCOPE_DATA_PACKETSIZE; i++) {
-  printf("%02x ", data[i]);
+  printf("%02x ", (unsigned char) data[i]);
  }
  printf("\n");
 }
@@ -176,14 +176,18 @@ void lib_read_slo_data_TEST(struct usb_device *dev) {
  char data1[SLOSCOPE_DATA_PACKETSIZE];
  char data2[SLOSCOPE_DATA_PACKETSIZE];
  char data3[SLOSCOPE_DATA_PACKETSIZE];
+ char data4[SLOSCOPE_DATA_PACKETSIZE];
  
  usb_dev_handle *handle=usb_open(dev);
  
 // The slo-scope will take a new reading every (Period+1)/12 microseconds.  Default 539.
 
 // int retval = usb_control_msg(handle, requesttype, request, value, index, (char *)data, size, timeout (ms) );
- int retval = usb_control_msg(handle, 0x40, REQUEST_SET_VARIABLE, SLOSCOPE_PERIOD_10K, VARIABLE_SLOSCOPE_PERIOD, NULL, 0, USBPROGRAMMER_TIMEOUT);
- printf("set:VARIABLE_SLOSCOPE_PERIOD -> %d\n", retval);
+// int retval = usb_control_msg(handle, 0x40, REQUEST_SET_VARIABLE, SLOSCOPE_PERIOD_10K, VARIABLE_SLOSCOPE_PERIOD, NULL, 0, USBPROGRAMMER_TIMEOUT);
+// printf("set:VARIABLE_SLOSCOPE_PERIOD -> %d\n", retval);
+ 
+ int period = SLOSCOPE_PERIOD_REAL;
+ getset_slo_scope_period(handle, &period);
  
 /*
  To read data from the slo-scope, you must use the REQUEST_SET_VARIABLE request to set VARIABLE_SLOSCOPE_STATE, as above.  
@@ -201,18 +205,15 @@ void lib_read_slo_data_TEST(struct usb_device *dev) {
 // int retval=usb_interrupt_read(usb_dev_handle *dev, int ep, char *bytes, int size, int timeout);
  int retval1=usb_interrupt_read(handle, SLOSCOPE_DATA_ENDPOINT, data1, SLOSCOPE_DATA_PACKETSIZE, USBPROGRAMMER_TIMEOUT);
  int retval2=usb_interrupt_read(handle, SLOSCOPE_DATA_ENDPOINT, data2, SLOSCOPE_DATA_PACKETSIZE, USBPROGRAMMER_TIMEOUT);
-// int retval3=usb_interrupt_read(handle, SLOSCOPE_DATA_ENDPOINT, data3, SLOSCOPE_DATA_PACKETSIZE, USBPROGRAMMER_TIMEOUT);
+ int retval3=usb_interrupt_read(handle, SLOSCOPE_DATA_ENDPOINT, data3, SLOSCOPE_DATA_PACKETSIZE, USBPROGRAMMER_TIMEOUT);
+ int retval4=usb_interrupt_read(handle, SLOSCOPE_DATA_ENDPOINT, data4, SLOSCOPE_DATA_PACKETSIZE, USBPROGRAMMER_TIMEOUT);
 
  usb_close(handle);
  
- printf("get:SLOSCOPE_DATA -> %d\n", retval1);
- lib_explain_slo_data(data1);
- 
- printf("get:SLOSCOPE_DATA -> %d\n", retval2);
- lib_explain_slo_data(data2);
- 
-// printf("get:SLOSCOPE_DATA -> %d\n", retval3);
-// lib_explain_slo_data(data3);
+ lib_explain_slo_data(retval1, data1);
+ lib_explain_slo_data(retval2, data2);
+ lib_explain_slo_data(retval3, data3);
+ lib_explain_slo_data(retval4, data4);
  
  return;
 }
@@ -227,21 +228,36 @@ void lib_read_slo_data(struct usb_device *dev, char *raw) {
 
 /*
  To read data from the slo-scope, you must use the REQUEST_SET_VARIABLE request to set VARIABLE_SLOSCOPE_STATE, as above.  
- Then you can read data from  Endpoint 5 IN.  This is an interrupt endpoint.  
+ Then you can read data from Endpoint 5 IN.  This is an interrupt endpoint.  
  
  A new packet of slo-scope data will be available every millisecond.
  
  Each packet is 22 bytes long.  
  
- The first byte is the number of missed readings (readings that had to be discarded because there was no USB buffer available for them) between the time the last packet was finished and the time this packet was started.  It's good for this number to be positive because a value of zero means the slo-scope might be sampling too slowly.  
+ The first byte is the number of missed readings 
+ (readings that had to be discarded because there was no USB buffer available for them) 
+ between the time the last packet was finished and the time this packet was started.  
  
- The second byte is the low 8 bits of the USB frame number when the packet was started (basically a milli-second timer).  If the SLO-scope is sampling fast enough and the computer is reading fast enough, then the USB frame number should increase by exactly one each time you read a new packet from the slo-scope, which should be every millisecond.
+ It's good for this number to be positive because a value of zero means the slo-scope might be sampling too slowly.  
+ 
+ The second byte is the low 8 bits of the USB frame number when the packet was started (basically a milli-second timer).  
+ 
+ If the SLO-scope is sampling fast enough and the computer is reading fast enough, 
+ then the USB frame number should increase by exactly one each time you read a new packet from the slo-scope, 
+ which should be every millisecond.
 */
  
 // int retval=usb_interrupt_read(usb_dev_handle *dev, int ep, char *bytes, int size, int timeout);
  int retval=usb_interrupt_read(handle, SLOSCOPE_DATA_ENDPOINT, data, SLOSCOPE_DATA_PACKETSIZE, USBPROGRAMMER_TIMEOUT);
 
  usb_close(handle);
+
+/*
+ for(int i=0; i< (SLOSCOPE_DATA_PACKETSIZE-2); i++) {
+// raw[i] = i * 10;
+  raw[i] = data[i+2];
+ }
+*/
 
  // BLAM !
  memcpy(raw, &data[2], (SLOSCOPE_DATA_PACKETSIZE-2) );

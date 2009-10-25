@@ -23,18 +23,25 @@
 #define SLOSCOPE_STATE_2ANALOG          1
 #define SLOSCOPE_STATE_1ANALOG_1DIGITAL 2
  
-#define VARIABLE_SLOSCOPE_PERIOD 0x40 // 2 bytes.  The slo-scope will take a new reading every (Period+1)/12 microseconds.  Default 539.
+// 2 bytes.  The slo-scope will take a new reading every (Period+1)/12 microseconds.  Default 539.
+#define VARIABLE_SLOSCOPE_PERIOD 0x40 
  
-#define VARIABLE_FVR_ADC         0x41 // 2 bytes, read only.  A value of 1 indicates an error.  Otherwise it's a measurement of the 1.024 V internal voltage reference, as a number from 0 to 65472.
+// 2 bytes, read only.  A value of 1 indicates an error.  
+// Otherwise it's a measurement of the 1.024 V internal voltage reference, as a number from 0 to 65472.
+#define VARIABLE_FVR_ADC         0x41 
+
  
-#define VARIABLE_SLOSCOPE_OUTPUT_STATE 0x43 // 2 bytes, first is line A and second is line B.
+// 2 bytes, first is line A and second is line B.
+#define VARIABLE_SLOSCOPE_OUTPUT_STATE 0x43 
+
 #define SLOSCOPE_OUTPUT_OFF       0
 #define SLOSCOPE_OUTPUT_LOW       1
 #define SLOSCOPE_OUTPUT_HIGH      3
 #define SLOSCOPE_OUTPUT_NO_CHANGE 0xFF
 
-#define SLOSCOPE_PERIOD_10K    (100*12 - 1)
-#define SLOSCOPE_PERIOD_20K    ( 50*12 - 1)
+// These samples are for 20KHz of :  (A)(B)(A)(B) (10KHz each) or (Ab)(Ab)(Ab)(Ab) (20KHz + 1 digital)
+#define SLOSCOPE_PERIOD_IDEAL    (50*12 - 1)
+#define SLOSCOPE_PERIOD_REAL     (50*12 - 1 - 20*3) 
 
 #define SLOSCOPE_DATA_ENDPOINT     5
 #define SLOSCOPE_DATA_PACKETSIZE  22

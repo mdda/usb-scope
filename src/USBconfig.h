@@ -55,6 +55,8 @@ static const wxCmdLineEntryDesc g_cmdLineDesc [] = {
   { wxCMD_LINE_OPTION, wxT("b"), wxT("line_b"), wxT("set line B state : { i|input, 0|low, 1|high }"), 
        wxCMD_LINE_VAL_STRING },
 
+  { wxCMD_LINE_SWITCH, wxT("t"), wxT("test"), wxT("do a test (defined by the code - usefull for developers)"), },
+  
   { wxCMD_LINE_NONE }
 };
  

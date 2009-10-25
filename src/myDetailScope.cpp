@@ -144,7 +144,7 @@ void myDetailScope::UpdateDisplay() {
     RedrawAxes(dc, show_raw_from, show_raw_next); 
     
     // Ok, so lets paint up the data ...
-    RedrawData( dc, show_raw_from, show_raw_next); 
+    RedrawData(dc, show_raw_from, show_raw_next); 
     
     screen_dirty=false;
   }
