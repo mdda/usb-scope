@@ -127,7 +127,7 @@ void myReadScope::readBlock() {
 
   
   if(true) { // Here is the real data read
-    lib_read_slo_data(dev, raw_data);
+    lib_read_slo_data(dev, raw_data + (filled_up_next % LONG_BUFFER_SIZE));
   }
   else {  // This is just for debugging...
     // Now, fill in the data from 'filled_in_next' for SHORT_BUFFER_SIZE

@@ -25,5 +25,8 @@ int get_sw_version_minor(usb_dev_handle *handle);
 
 //void lib_set_slo_scope_state( struct usb_device *dev, int state );
 //void lib_read_slo_data(struct usb_device *dev);
+void lib_read_slo_data_TEST(struct usb_device *dev);
 
 void lib_read_slo_data(struct usb_device *dev, char *raw);
+
+

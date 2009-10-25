@@ -113,10 +113,14 @@ bool USBconfig::OnCmdLineParsed(wxCmdLineParser& parser) {
 /* ---------------------------------------------------------------------------- */  
 /* -----Implement the various settings given on the device--------------------- */  
 /* ---------------------------------------------------------------------------- */  
+  if(parser.Found(wxT("t"))) { // Test mode
+    lib_read_slo_data_TEST(dev);
+    return false;
+  }
   
   //printf("Found Pololu USB Programmer\n");
   usb_dev_handle *handle=usb_open(dev);
-  
+
   if(verbose) {
     // usb_set_debug(2);
   }
