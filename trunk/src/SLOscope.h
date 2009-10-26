@@ -106,6 +106,7 @@ private:
   int screen_showing_from, screen_showing_next;
 
   void RedrawData(wxDC &dc, int raw_from, int raw_next, float pos_from);
+  void RedrawDataAll();
 
 public:
   void setReader(myReadScope *reader);

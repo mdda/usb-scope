@@ -275,11 +275,10 @@ void MyFrame::long_scope_event(wxCommandEvent &event) {
     // update the DetailScope with the new bounds
     DetailScope->setExamineHistory(LongScope->drag_start_raw, LongScope->drag_end_raw);  // The DetailScope will 'zoom in as required'
     break;
-/*
    case scope_mouse_drag_ended:
-    // update the DetailScope with the new bounds - all done
+    // update the DetailScope with the new bounds 
+    DetailScope->setExamineHistory(LongScope->drag_start_raw, LongScope->drag_end_raw);  // The DetailScope will 'zoom in as required'
     break;
-*/
    default : 
     printf("Unknown LongScope Action !\n");
     break;

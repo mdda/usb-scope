@@ -75,7 +75,7 @@ void myLongScope::OnMouse(wxMouseEvent& event) { // Do something when there's a 
   GetSize(&sx, &sy);
   
   float screen_pct = (float)mouse.x/(float)sx;
-  int raw_version =  screen_showing_next - LONG_BUFFER_SIZE * (1.0 - screen_pct);
+  int raw_version =  screen_showing_next - (float)LONG_BUFFER_SIZE * (float)(1.0 - screen_pct);
   
 //  printf("Mouse position (before) : %d (=%6.4f) :translates to %d)\n", mouse.x, screen_pct, raw_version);
   if(raw_version<screen_showing_from) {
@@ -84,14 +84,15 @@ void myLongScope::OnMouse(wxMouseEvent& event) { // Do something when there's a 
   if(raw_version>screen_showing_next) {
     raw_version=screen_showing_next;
   }
-//  printf("Mouse position (after ) : %d (=%6.4f) :translates to %d)\n", mouse.x, screen_pct, raw_version);
+  printf("Mouse position (after ) : %d (=%6.4f) :translates to %d)\n", mouse.x, screen_pct, raw_version);
   
-  // Send an event to parent...
+  // Prepare a command event to send to parent...
   wxCommandEvent parent_event(wxEVT_COMMAND_TOOL_CLICKED, long_scope_needs_attention);
   
   if(event.LeftDown()) {
-    printf("LongScope : OnMouse : LeftDown()\n");
+    printf("LongScope : OnMouse : LeftDown() @ %d\n", mouse.x);
     parent_event.SetInt(scope_mouse_left_click);
+    RedrawDataAll();
     
     // This is for OnPaint
     drag_start=mouse.x;
@@ -103,14 +104,14 @@ void myLongScope::OnMouse(wxMouseEvent& event) { // Do something when there's a 
     drag_end_raw=raw_version; 
   }
   else if(event.LeftUp()) {
-    printf("LongScope : OnMouse : LeftUp()\n");
+    printf("LongScope : OnMouse : LeftUp() @ %d\n", mouse.x);
     parent_event.SetInt(scope_mouse_drag_ended);
     drag_end=mouse.x;
     drag_end_raw=raw_version; 
     // Don't stop the 'highlighting' here : let the Frame do this, since it's the one setting the reader going...
   }
   else if(event.Dragging()) {
-    printf("LongScope : OnMouse : Dragging()\n");
+    printf("LongScope : OnMouse : Dragging() now @ %d\n", mouse.x);
     parent_event.SetInt(scope_mouse_dragging);
     drag_end=mouse.x;
     drag_end_raw=raw_version; 
@@ -168,8 +169,6 @@ void myLongScope::UpdateDisplay() {
       dc.SetLogicalFunction(wxCOPY);
     }
    
-//    RedrawData( dc, 0, LONG_BUFFER_SIZE, 0.0 ); // Whole thing
-   
     // Grab the raw data variables (using MUTEX)
     reader->s_mutexRawDataExtents.Lock();
     int raw_from = reader->filled_up_from;
@@ -188,7 +187,7 @@ void myLongScope::UpdateDisplay() {
     float shift_pct = (float)(new_amount)/(float)LONG_BUFFER_SIZE;
     
     // Shift 'old data' to the Left
-    wxCoord shift_x = (wxCoord) (sx * shift_pct);
+    wxCoord shift_x = (wxCoord) (sx * shift_pct); 
     
     if(shift_x <= 1) {
       // printf("myLongScope SHIFT : [%d]\n", shift_x);
@@ -220,6 +219,10 @@ bool wxDC::Blit  	(  	wxCoord   	 xdest, wxCoord  	ydest,
       dc.Clear();
     }
     
+    // TODO : Really : Should adjust extents of data to be displayed to be pixel-accurate, otherwise
+    //  there's a sub-pixel drift built into this process 
+    // (fix at the moment is to redraw whole LongScope when it gets clicked for examination)
+    
     // Ok, so lets paint up the new data ...
     RedrawData( dc, screen_showing_next, screen_showing_next + new_amount, 1.0 - shift_pct); 
 
@@ -235,6 +238,12 @@ bool wxDC::Blit  	(  	wxCoord   	 xdest, wxCoord  	ydest,
     }
   }
   return;
+}
+
+void myLongScope::RedrawDataAll() {
+  wxPaintDC dc(this);
+  float pos_start = (float)(screen_showing_next-screen_showing_from)/(float)LONG_BUFFER_SIZE;
+  RedrawData(dc, screen_showing_from, screen_showing_next, 1.0-pos_start);
 }
  
 // raw_xyz corresponds to the data in the raw buffer
