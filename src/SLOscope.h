@@ -123,6 +123,8 @@ private:
   bool highlight_onscreen, highlight;
   int drag_start, drag_end;  // These are screen locations
   int drag_start_onscreen, drag_end_onscreen;  // These are the locations that have been drawn on-screen so far
+  void removeExistingHighlighting(wxDC &dc, wxCoord sy);
+
 };
 
 
