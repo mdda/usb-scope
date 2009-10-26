@@ -35,6 +35,7 @@ void myDetailScope::setExamineHistory(int raw_from, int raw_next) {
     screen_offset_from=raw_next;
     screen_offset_next=raw_from;
   }
+  
   examine_mode = true;
   screen_dirty = true;
 }
@@ -44,6 +45,7 @@ void myDetailScope::setExamineHistory() {
 void myDetailScope::setExamineCurrent(int size) { 
   printf("screen_offset_size set to %d\n", size);
   screen_offset_size=size;
+
   examine_mode = false;
   screen_dirty = true;
 }
@@ -133,8 +135,12 @@ void myDetailScope::UpdateDisplay() {
       }
     }
     if( not_enough_data ) { // Don't bother doing anything
+      printf("Not enough Data!\n");
       return; 
     }
+    
+    // Channel A is always on Even bytes (forget whether we're interleaved or not : resolution not that important)
+    show_raw_from = show_raw_from & 0xFFFFFFFFFE; // Clear off lowest bit 
     
     // Save the extents of what we're showing - used by setExamineHistory() when we just 'pause' the display
     screen_showing_from=show_raw_from;
