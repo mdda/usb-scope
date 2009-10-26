@@ -49,6 +49,9 @@ public:
   int getSLOmode();
   void setSLOmode(int _mode);
   
+  int getIOstate();
+  void setIOstate(int _state);
+
   float sample_frequency_Hz; // Rough : just # samples per second... (not adjusted for VARIABLE_SLOSCOPE_PERIOD )
   
  private :
@@ -75,6 +78,8 @@ enum {
   detail_scope_needs_attention,
   menu_choose_a_color,
   menu_choose_b_color,
+  radio_ch_a_change,
+  radio_ch_b_change,
 };
 
 enum {
@@ -249,10 +254,13 @@ public:
     virtual void choose1A1D(wxCommandEvent &event); // wxGlade: <event_handler>
     virtual void oscilloscope_mode_change(wxCommandEvent &event); // wxGlade: <event_handler>
 
-    void choosePenColor(wxPen *p, wxRadioBox *rb);
     void chooseAcolor(wxCommandEvent &event);
     void chooseBcolor(wxCommandEvent &event);
+
+    void ChannelIO_changed(wxCommandEvent &event);
+
     void OnMouse(wxMouseEvent& event);
+
     void long_scope_event(wxCommandEvent &event);
     void detail_scope_event(wxCommandEvent &event);
 
@@ -266,6 +274,8 @@ private:
   myReadScope *reader;
 
   void coordinated_mode_change(bool mode_now_paused);
+  void choosePenColor(wxPen *p, wxRadioBox *rb);
+  void ChannelIO_update_controls();
 
 }; // wxGlade: end class
 

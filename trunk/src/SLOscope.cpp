@@ -17,6 +17,8 @@ BEGIN_EVENT_TABLE(MyFrame, wxFrame)
     EVT_TOOL(detail_scope_needs_attention, MyFrame::detail_scope_event)
     EVT_MENU(menu_choose_a_color, MyFrame::chooseAcolor)
     EVT_MENU(menu_choose_b_color, MyFrame::chooseBcolor)
+    EVT_RADIOBOX(radio_ch_a_change, MyFrame::ChannelIO_changed)
+    EVT_RADIOBOX(radio_ch_b_change, MyFrame::ChannelIO_changed)
 END_EVENT_TABLE()
 
 
@@ -55,14 +57,14 @@ MyFrame::MyFrame(wxWindow* parent, int id, const wxString& title, const wxPoint&
         wxT("=0"),
         wxT("=1")
     };
-    ChA_InOut = new wxRadioBox(this, wxID_ANY, wxT("Input / Output"), wxDefaultPosition, wxDefaultSize, 3, ChA_InOut_choices, 3, wxRA_SPECIFY_COLS);
+    ChA_InOut = new wxRadioBox(this, radio_ch_a_change, wxT("Input / Output"), wxDefaultPosition, wxDefaultSize, 3, ChA_InOut_choices, 3, wxRA_SPECIFY_COLS);
     ChB_VDiv = new wxSpinCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100);
     const wxString ChB_InOut_choices[] = {
         wxT("In"),
         wxT("=0"),
         wxT("=1")
     };
-    ChB_InOut = new wxRadioBox(this, wxID_ANY, wxT("Input / Output"), wxDefaultPosition, wxDefaultSize, 3, ChB_InOut_choices, 3, wxRA_SPECIFY_COLS);
+    ChB_InOut = new wxRadioBox(this, radio_ch_b_change, wxT("Input / Output"), wxDefaultPosition, wxDefaultSize, 3, ChB_InOut_choices, 3, wxRA_SPECIFY_COLS);
     SavePNG = new wxButton(this, wxID_ANY, wxT("Save as PNG"));
     LongScope = new myLongScope(this, wxID_ANY);
     DetailScope = new myDetailScope(this, wxID_ANY);
@@ -276,7 +278,33 @@ void MyFrame::chooseBcolor(wxCommandEvent &event) {
   choosePenColor(pen_b, ChB_InOut);
 }
 
+void MyFrame::ChannelIO_update_controls() {
+  // This reads the current IO control positions, and updates the radio buttons to suit
+  printf("ChannelIO_update_controls\n"); 
+  int state =  reader->getIOstate();   
 
+// state = {0=>input, 1=>output lo, 3=>output hi};
+  int ch_a = state & 0xFF;
+  int ch_b = ( state >> 8 ) & 0xFF;
+  
+  ChA_InOut->SetSelection( (ch_a == 0)?(0):((ch_a == 1)?(1):(2)) );
+  ChB_InOut->SetSelection( (ch_b == 0)?(0):((ch_b == 1)?(1):(2)) );
+}
+ 
+void MyFrame::ChannelIO_changed(wxCommandEvent &event) {
+  // Get the IO control positions, update the IO setup, and then re-read the IO setup back to the controls
+  printf("ChannelIO_changed\n"); 
+  int state_new=0;
+ 
+  int ch_a = ChA_InOut->GetSelection();
+  state_new =    (ch_a == 0)?(0):((ch_a == 1)?(1):(3));
+  int ch_b = ChB_InOut->GetSelection();
+  state_new += ( (ch_b == 0)?(0):((ch_b == 1)?(1):(3)) ) << 8;
+ 
+  reader->setIOstate(state_new);   
+ 
+  ChannelIO_update_controls();
+}
 
 void MyFrame::oscilloscope_mode_change(wxCommandEvent &event) {
   coordinated_mode_change(event.GetSelection() == 1);
