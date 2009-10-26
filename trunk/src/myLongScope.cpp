@@ -68,11 +68,12 @@ void myLongScope::OnMouse(wxMouseEvent& event) { // Do something when there's a 
     return;
   }
   
+  wxPaintDC dc(this);
+  wxCoord sx, sy;
+  dc.GetSize(&sx, &sy);
+  
   printf("Mousing in myLongScope\n");
   wxPoint mouse(event.GetX(), event.GetY());
-  
-  wxCoord sx, sy;
-  GetSize(&sx, &sy);
   
   float screen_pct = (float)mouse.x/(float)sx;
   int raw_version =  screen_showing_next - (float)LONG_BUFFER_SIZE * (float)(1.0 - screen_pct);
@@ -92,6 +93,9 @@ void myLongScope::OnMouse(wxMouseEvent& event) { // Do something when there's a 
   if(event.LeftDown()) {
     printf("LongScope : OnMouse : LeftDown() @ %d\n", mouse.x);
     parent_event.SetInt(scope_mouse_left_click);
+
+    removeExistingHighlighting(dc, sy);
+
     RedrawDataAll();
     
     // This is for OnPaint
@@ -108,6 +112,7 @@ void myLongScope::OnMouse(wxMouseEvent& event) { // Do something when there's a 
     parent_event.SetInt(scope_mouse_drag_ended);
     drag_end=mouse.x;
     drag_end_raw=raw_version; 
+   
     // Don't stop the 'highlighting' here : let the Frame do this, since it's the one setting the reader going...
   }
   else if(event.Dragging()) {
@@ -129,6 +134,18 @@ void myLongScope::OnTimer(wxTimerEvent& event) { // Do something when there's a 
 }
 
 
+void myLongScope::removeExistingHighlighting(wxDC &dc, wxCoord sy) {
+  if(highlight_onscreen) { // There's already something on-screen, remove it first
+    dc.SetPen(wxNullPen);
+    dc.SetBrush(*wxBLACK_BRUSH);
+   
+    dc.SetLogicalFunction(wxINVERT);
+   
+    dc.DrawRectangle(drag_start_onscreen,0, (drag_end_onscreen - drag_start_onscreen), sy);
+    highlight_onscreen=false;
+  }
+}      
+
 
 void myLongScope::UpdateDisplay() {
   wxPaintDC dc(this);
@@ -141,23 +158,20 @@ void myLongScope::UpdateDisplay() {
     if(highlight || highlight_onscreen) {
 //      printf("Highlighting - before:'%s' next:'%s'\n", highlight_onscreen?"Y":"N", highlight?"Y":"N");
      
-//    This is for a rubber-band box
- /*  
-      dc.SetPen(*wxBLACK_DASHED_PEN);
-      dc.SetBrush(*wxTRANSPARENT_BRUSH);
-*/     
-//    This is for a filled-in inverted box
-      dc.SetPen(wxNullPen);
-      dc.SetBrush(*wxBLACK_BRUSH);
+      removeExistingHighlighting(dc, sy);
      
-      dc.SetLogicalFunction(wxINVERT);
-     
-      if(highlight_onscreen) { // There's already something on-screen, remove it first
-        dc.DrawRectangle(drag_start_onscreen,0, (drag_end_onscreen - drag_start_onscreen), sy);
-        highlight_onscreen=false;
-      }
-      
       if(highlight) {
+//      This is for a rubber-band box
+ /*  
+        dc.SetPen(*wxBLACK_DASHED_PEN);
+        dc.SetBrush(*wxTRANSPARENT_BRUSH);
+*/     
+//      This is for a filled-in inverted box
+        dc.SetPen(wxNullPen);
+        dc.SetBrush(*wxBLACK_BRUSH);
+       
+        dc.SetLogicalFunction(wxINVERT);
+       
         // update the onscreen internals...
         drag_start_onscreen=drag_start;
         drag_end_onscreen=drag_end;
