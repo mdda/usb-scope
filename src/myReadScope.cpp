@@ -82,6 +82,21 @@ int myReadScope::getSLOmode() {
   return slo_mode_current;
 }
 
+void myReadScope::setIOstate(int _state) {
+  usb_dev_handle *handle = openHandle();
+  getset_slo_scope_output_state(handle, &_state);
+  closeHandle(handle);
+  return;
+}
+
+int myReadScope::getIOstate() {
+  usb_dev_handle *handle = openHandle();
+  int state = getset_slo_scope_output_state(handle, NULL);
+  closeHandle(handle);
+  return state;
+}
+
+
 void *myReadScope::Entry() {
   while(1) {
     if( getPaused() ) {  // I am in a paused state
