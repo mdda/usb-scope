@@ -44,9 +44,9 @@
 *DONE* Colour picker for A and B lines (have already centralized wxPen definitions in Frame)
 *DONE* http://docs.wxwidgets.org/trunk/classwx_colour_picker_ctrl.html
 
-Draw DetailScope Voltage axes with appropriate scaling
+*DONE* A & B i|0|1 selectors
 
-A & B i|0|1 selector
+Draw DetailScope Voltage axes with appropriate scaling
 
 Right-Click context menu for DetailScope : Set triggers
 http://docs.wxwidgets.org/stable/wx_wxwindow.html#wxwindowpopupmenu
