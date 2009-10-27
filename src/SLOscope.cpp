@@ -21,6 +21,22 @@ BEGIN_EVENT_TABLE(MyFrame, wxFrame)
     EVT_TOOL(detail_scope_needs_attention, MyFrame::detail_scope_event)
 END_EVENT_TABLE()
 
+BEGIN_EVENT_TABLE(DetailScopeRightClick, wxMenuBar)
+// content of this block not found: did you rename this class?
+/*
+    EVT_MENU(rc_no_triggers, MyFrame::RightClickMenuChange)
+    EVT_MENU(rc_a_up, MyFrame::RightClickMenuChange)
+    EVT_MENU(rc_a_down, MyFrame::RightClickMenuChange)
+    EVT_MENU(rc_b_up, MyFrame::RightClickMenuChange)
+    EVT_MENU(rc_b_down, MyFrame::RightClickMenuChange)
+*/
+    EVT_MENU(rc_no_triggers, DetailScopeRightClick::RightClickMenuChange)
+    EVT_MENU(rc_a_up, DetailScopeRightClick::RightClickMenuChange)
+    EVT_MENU(rc_a_down, DetailScopeRightClick::RightClickMenuChange)
+    EVT_MENU(rc_b_up, DetailScopeRightClick::RightClickMenuChange)
+    EVT_MENU(rc_b_down, DetailScopeRightClick::RightClickMenuChange)
+END_EVENT_TABLE()
+
 
 MyFrame::MyFrame(wxWindow* parent, int id, const wxString& title, const wxPoint& pos, const wxSize& size, long style):
     wxFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE)
@@ -361,8 +377,6 @@ void MyFrame::detail_scope_event(wxCommandEvent &event) {
 }
 
 
-
-
 DetailScopeRightClick::DetailScopeRightClick():wxMenuBar() {
     // begin wxGlade: DetailScopeRightClick::DetailScopeRightClick
 
@@ -374,24 +388,33 @@ DetailScopeRightClick::DetailScopeRightClick():wxMenuBar() {
 void DetailScopeRightClick::set_properties() {
     // begin wxGlade: DetailScopeRightClick::set_properties
     wxMenu* wxglade_tmp_menu_1 = new wxMenu();
-    wxglade_tmp_menu_1->Append(wxID_ANY, wxT("Remove Triggers"), wxEmptyString, wxITEM_NORMAL);
-    Append(wxglade_tmp_menu_1, wxT("RightClick"));
+    wxglade_tmp_menu_1->Append(rc_no_triggers, wxT("Remove Triggers"), wxEmptyString, wxITEM_RADIO);
+    wxglade_tmp_menu_1->AppendSeparator();
+    wxglade_tmp_menu_1->Append(rc_a_up, wxT("Ch A Up"), wxEmptyString, wxITEM_RADIO);
+    wxglade_tmp_menu_1->Append(rc_a_down, wxT("Ch A Down"), wxEmptyString, wxITEM_RADIO);
+    wxglade_tmp_menu_1->AppendSeparator();
+    wxglade_tmp_menu_1->Append(rc_b_up, wxT("Ch B Up"), wxEmptyString, wxITEM_RADIO);
+    wxglade_tmp_menu_1->Append(rc_b_down, wxT("Ch B Down"), wxEmptyString, wxITEM_RADIO);
+    Append(wxglade_tmp_menu_1, wxT("RightClickMenu is first item"));
     // end wxGlade
 }
 
+void DetailScopeRightClick::pop_up() {
+  PopupMenu( GetMenu(0) );
+}
 
 void DetailScopeRightClick::do_layout() {
     // begin wxGlade: DetailScopeRightClick::do_layout
     // end wxGlade
 }
 
-
-
-
-
-
-
-
-
-
+void DetailScopeRightClick::RightClickMenuChange(wxCommandEvent &event) {
+  printf("RightClickMenuChange to '%d' in DetailScopeRightClick\n", event.GetSelection()); 
+  // What was clicked ??
+  for(int i=0; i<this->GetMenu(0)->GetMenuItemCount(); i++) {
+   printf("Menu Item %d is %s\n", i, (this->GetMenu(0)->FindItemByPosition(i)->IsChecked())?"Selected":"--");
+  }
+ 
+  return;
+}
 
