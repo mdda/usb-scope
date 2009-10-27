@@ -168,10 +168,14 @@ private:
   bool screen_dirty;                             // does the screen need redrawing? 
   int screen_showing_from, screen_showing_next;  // Just so we can see where we are after OnPaint
 
+  int trigger_selection_id;
+
   bool trigger_on;
-  int trigger_channel;  // 0=>A 1=>B
-  int trigger_level;
+  bool trigger_channel_a;  // 0=>A 1=>B
   bool trigger_rising;  // true=>rising, false=>falling
+
+  int  trigger_level;     // y axis position in units of voltage ( 0 .. 255 )
+  int  trigger_position;  // x axis position in Pixels ( 0 .. size.x )
 
   void RedrawAxes(wxDC &dc, int raw_from, int raw_next);
   void RedrawData(wxDC &dc, int raw_from, int raw_next);
@@ -206,6 +210,9 @@ public:
     void pop_up();
 
     void RightClickMenuChange(wxCommandEvent &event);
+    void SetSelectedId(int _sel);
+    int  GetSelectedId();
+
 
 protected:
   DECLARE_EVENT_TABLE()
@@ -215,6 +222,7 @@ private:
     void set_properties();
     void do_layout();
     // end wxGlade
+    int selected_id;
 
 protected:
     // begin wxGlade: DetailScopeRightClick::attributes
