@@ -13,6 +13,7 @@ myDetailScope::myDetailScope(wxWindow *parent, int id) : wxPanel(parent, id) {
   Connect(wxEVT_SIZE, wxSizeEventHandler(myDetailScope::OnSize));
  
   Connect(wxEVT_LEFT_DOWN, wxMouseEventHandler(myDetailScope::OnMouse));
+  Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(myDetailScope::OnMouse));
  
   Connect(wxEVT_TIMER, wxTimerEventHandler(myDetailScope::OnTimer));
  
@@ -63,9 +64,26 @@ void myDetailScope::OnSize(wxSizeEvent& event) {
 void myDetailScope::OnMouse(wxMouseEvent& event) { // Do something when there's a mouse event
   printf("Mousing in myDetailScope\n");
  
-  // Send an event to parent...
-  wxCommandEvent parent_event(wxEVT_COMMAND_TOOL_CLICKED, detail_scope_needs_attention);
-  ProcessEvent(parent_event);
+  wxPaintDC dc(this);
+  wxCoord sx, sy;
+  dc.GetSize(&sx, &sy);
+ 
+  wxPoint mouse(event.GetX(), event.GetY());
+
+  if(event.RightDown()) {
+    printf("DetailScope : OnMouse : RightDown() @ (%d,%d)\n", mouse.x, mouse.y);
+    // Put up the right-click menu bar
+   
+    DetailScopeRightClick *menubar=new DetailScopeRightClick;
+    menubar->pop_up();
+    // Events created by menu will be dealt with there...
+  }
+  else if(event.LeftDown()) {
+    // Send an event to parent...
+    wxCommandEvent parent_event(wxEVT_COMMAND_TOOL_CLICKED, detail_scope_needs_attention);
+    ProcessEvent(parent_event);
+  }
+  return;
 }
 
 

@@ -69,7 +69,7 @@ public:
   void setPaused(bool paused);
 };
 
-// List all the event codes here, so that they can be tied up with the 
+// List all the event codes here, so that they can be tied up with the MyFrame events
 enum {
   menu_mode_2A,
   menu_mode_1A1D,
@@ -80,6 +80,12 @@ enum {
   menu_view_b_color,
   radio_ch_a_change,
   radio_ch_b_change,
+ 
+  rc_no_triggers,
+  rc_a_up,
+  rc_a_down,
+  rc_b_up,
+  rc_b_down,
 };
 
 enum {
@@ -197,6 +203,12 @@ public:
     // end wxGlade
 
     DetailScopeRightClick();
+    void pop_up();
+
+    void RightClickMenuChange(wxCommandEvent &event);
+
+protected:
+  DECLARE_EVENT_TABLE()
 
 private:
     // begin wxGlade: DetailScopeRightClick::methods
