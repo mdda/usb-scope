@@ -11,14 +11,14 @@ BEGIN_EVENT_TABLE(MyFrame, wxFrame)
     // begin wxGlade: MyFrame::event_table
     EVT_MENU(menu_mode_2A, MyFrame::choose2A)
     EVT_MENU(menu_mode_1A1D, MyFrame::choose1A1D)
+    EVT_MENU(menu_view_a_color, MyFrame::chooseAcolor)
+    EVT_MENU(menu_view_b_color, MyFrame::chooseBcolor)
     EVT_RADIOBOX(osc_mode_change, MyFrame::oscilloscope_mode_change)
+    EVT_RADIOBOX(radio_ch_a_change, MyFrame::ChannelIO_changed)
+    EVT_RADIOBOX(radio_ch_b_change, MyFrame::ChannelIO_changed)
     // end wxGlade
     EVT_TOOL(long_scope_needs_attention, MyFrame::long_scope_event)
     EVT_TOOL(detail_scope_needs_attention, MyFrame::detail_scope_event)
-    EVT_MENU(menu_choose_a_color, MyFrame::chooseAcolor)
-    EVT_MENU(menu_choose_b_color, MyFrame::chooseBcolor)
-    EVT_RADIOBOX(radio_ch_a_change, MyFrame::ChannelIO_changed)
-    EVT_RADIOBOX(radio_ch_b_change, MyFrame::ChannelIO_changed)
 END_EVENT_TABLE()
 
 
@@ -35,8 +35,8 @@ MyFrame::MyFrame(wxWindow* parent, int id, const wxString& title, const wxPoint&
     frame_1_menubar->Append(menu_mode_radio, wxT("Mode"));
     wxMenu* wxglade_tmp_menu_1 = new wxMenu();
     wxglade_tmp_menu_1->Append(wxID_ANY, wxT("Save as PNG"), wxEmptyString, wxITEM_NORMAL);
-    wxglade_tmp_menu_1->Append(menu_choose_a_color, wxT("Channel A Color"), wxEmptyString, wxITEM_NORMAL);
-    wxglade_tmp_menu_1->Append(menu_choose_b_color, wxT("Channel B Color"), wxEmptyString, wxITEM_NORMAL);
+    wxglade_tmp_menu_1->Append(menu_view_a_color, wxT("Channel A Color"), wxEmptyString, wxITEM_NORMAL);
+    wxglade_tmp_menu_1->Append(menu_view_b_color, wxT("Channel B Color"), wxEmptyString, wxITEM_NORMAL);
     frame_1_menubar->Append(wxglade_tmp_menu_1, wxT("View"));
     wxMenu* menu_persistence_radio = new wxMenu();
     menu_persistence_radio->Append(wxID_ANY, wxT("Off"), wxEmptyString, wxITEM_RADIO);
@@ -365,6 +365,7 @@ void MyFrame::detail_scope_event(wxCommandEvent &event) {
 
 DetailScopeRightClick::DetailScopeRightClick():wxMenuBar() {
     // begin wxGlade: DetailScopeRightClick::DetailScopeRightClick
+
     set_properties();
     do_layout();
     // end wxGlade
@@ -383,6 +384,14 @@ void DetailScopeRightClick::do_layout() {
     // begin wxGlade: DetailScopeRightClick::do_layout
     // end wxGlade
 }
+
+
+
+
+
+
+
+
 
 
 
