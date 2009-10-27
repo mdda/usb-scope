@@ -76,8 +76,8 @@ enum {
   osc_mode_change,
   long_scope_needs_attention,
   detail_scope_needs_attention,
-  menu_choose_a_color,
-  menu_choose_b_color,
+  menu_view_a_color,
+  menu_view_b_color,
   radio_ch_a_change,
   radio_ch_b_change,
 };
@@ -253,11 +253,9 @@ public:
     virtual void choose2A(wxCommandEvent &event); // wxGlade: <event_handler>
     virtual void choose1A1D(wxCommandEvent &event); // wxGlade: <event_handler>
     virtual void oscilloscope_mode_change(wxCommandEvent &event); // wxGlade: <event_handler>
-
-    void chooseAcolor(wxCommandEvent &event);
-    void chooseBcolor(wxCommandEvent &event);
-
-    void ChannelIO_changed(wxCommandEvent &event);
+    virtual void chooseAcolor(wxCommandEvent &event); // wxGlade: <event_handler>
+    virtual void chooseBcolor(wxCommandEvent &event); // wxGlade: <event_handler>
+    virtual void ChannelIO_changed(wxCommandEvent &event); // wxGlade: <event_handler>
 
     void OnMouse(wxMouseEvent& event);
 
