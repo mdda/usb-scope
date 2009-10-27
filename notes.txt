@@ -46,10 +46,12 @@
 
 *DONE* A & B i|0|1 selectors
 
-Draw DetailScope Voltage axes with appropriate scaling
+*DONE* Right-Click context menu for DetailScope : Set triggers
+*DONE* http://docs.wxwidgets.org/stable/wx_wxwindow.html#wxwindowpopupmenu
 
-Right-Click context menu for DetailScope : Set triggers
-http://docs.wxwidgets.org/stable/wx_wxwindow.html#wxwindowpopupmenu
+Implement trigger detection logic
+
+Draw DetailScope Voltage axes with appropriate scaling
 
 Save as PNG dialog (logic should be 'simple' since DCs work across devices)
 
