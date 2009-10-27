@@ -400,7 +400,20 @@ void DetailScopeRightClick::set_properties() {
 }
 
 void DetailScopeRightClick::pop_up() {
-  PopupMenu( GetMenu(0) );
+  wxMenu *menu=this->GetMenu(0);
+  for(int i=0; i<menu->GetMenuItemCount(); i++) {
+    wxMenuItem *item = menu->FindItemByPosition(i);
+    item->Check(item->GetId() == selected_id);
+  }
+  PopupMenu( menu );
+}
+
+void DetailScopeRightClick::SetSelectedId(int _sel) {
+  selected_id=_sel;
+}
+
+int DetailScopeRightClick::GetSelectedId() {
+  return selected_id;
 }
 
 void DetailScopeRightClick::do_layout() {
@@ -411,10 +424,16 @@ void DetailScopeRightClick::do_layout() {
 void DetailScopeRightClick::RightClickMenuChange(wxCommandEvent &event) {
   printf("RightClickMenuChange to '%d' in DetailScopeRightClick\n", event.GetSelection()); 
   // What was clicked ??
+  selected_id=-1;
   for(int i=0; i<this->GetMenu(0)->GetMenuItemCount(); i++) {
-   printf("Menu Item %d is %s\n", i, (this->GetMenu(0)->FindItemByPosition(i)->IsChecked())?"Selected":"--");
+    wxMenuItem * item=this->GetMenu(0)->FindItemByPosition(i);
+    bool sel = item->IsChecked();
+    // printf("Menu Item %d is %s\n", i, (sel)?"Selected":"--");
+    if(sel) {
+      selected_id=item->GetId();
+    }
   }
- 
+  
   return;
 }
 

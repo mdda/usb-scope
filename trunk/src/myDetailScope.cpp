@@ -21,6 +21,9 @@ myDetailScope::myDetailScope(wxWindow *parent, int id) : wxPanel(parent, id) {
  
   refresh_timer = new wxTimer(this, 1);
   screen_dirty = true;
+
+  trigger_selection_id=rc_no_triggers;
+  trigger_on=false;
 }
 
 void myDetailScope::setReader(myReadScope *_reader) {
@@ -74,9 +77,46 @@ void myDetailScope::OnMouse(wxMouseEvent& event) { // Do something when there's 
     printf("DetailScope : OnMouse : RightDown() @ (%d,%d)\n", mouse.x, mouse.y);
     // Put up the right-click menu bar
    
-    DetailScopeRightClick *menubar=new DetailScopeRightClick;
-    menubar->pop_up();
+    DetailScopeRightClick *rc_menu=new DetailScopeRightClick;
+    rc_menu->SetSelectedId(trigger_selection_id);
+    rc_menu->pop_up();
+   
     // Events created by menu will be dealt with there...
+
+    trigger_selection_id=rc_menu->GetSelectedId();
+   
+    trigger_on=true;
+    if(trigger_selection_id == rc_no_triggers) {
+      trigger_on=false;
+    }
+    else {
+      trigger_rising   =(trigger_selection_id == rc_a_up || trigger_selection_id == rc_b_up);
+      trigger_channel_a=(trigger_selection_id == rc_a_up || trigger_selection_id == rc_a_down);
+     
+      trigger_position = mouse.x;
+      trigger_level = (int)(((float)mouse.y / (float)sy) * 256.0);
+    }
+
+    // Display the returned results
+    switch(trigger_selection_id) {
+     case rc_no_triggers:
+      printf("No Triggers\n");
+      break;
+     case rc_a_up:
+      printf("A Up\n");
+      break;
+     case rc_a_down:
+      printf("A Down\n");
+      break;
+     case rc_b_up:
+      printf("B Up\n");
+      break;
+     case rc_b_down:
+      printf("B Down\n");
+      break;
+    }
+
+
   }
   else if(event.LeftDown()) {
     // Send an event to parent...
@@ -141,7 +181,7 @@ void myDetailScope::UpdateDisplay() {
       if(size_from_end > DETAIL_SCOPE_MAX_POINTS) {
         size_from_end = DETAIL_SCOPE_MAX_POINTS; // Hard limit on the size for refreshing here
       }
-      if(trigger_on) {  // Search for trigger locations here...
+      if(false && trigger_on) {  // Search for trigger locations here...  TODO
         // STUFF for Trigger detection
       }
       else {
