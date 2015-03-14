@@ -1,0 +1,83 @@
+# Problem #
+
+Since the Linux kernel doesn't 'know' the Pololu device, it doesn't give regular users privileges to write to it.
+
+# Details - and quick fix #
+
+```
+$ usb-programmer-config
+Gives meaning-less, and inconsistent results for the HW version (for instance)
+```
+
+while (doing the same as root) :
+```
+# usb-programmer-config
+Look different (and correct)
+```
+
+Check the device permissions :
+
+```
+# lsusb 
+Bus 005 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 004 Device 003: ID 046d:c03d Logitech, Inc. M-BT96a Pilot Optical Mouse
+Bus 004 Device 002: ID 413c:2003 Dell Computer Corp. Keyboard
+Bus 004 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 008 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 006 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 007 Device 011: ID 1ffb:0081  
+Bus 007 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 003 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+
+[root@madison build]# ls -l /dev/bus/usb/007/011 
+crw-rw-r-- 1 root root 189, 778 2009-10-13 20:59 /dev/bus/usb/007/011
+
+[root@madison build]# chmod 666 /dev/bus/usb/007/011 
+```
+
+Now :
+```
+$ usb-programmer-config
+Works beautifully...
+```
+
+# Details - and permanent fix  **work in progress** #
+
+Need to create a 'udev rule' to assign the permissions when the device is plugged in.
+
+Create a file called `/etc/udev/rules.d/65-pololu.rules` that contains :
+
+
+(for Linux Ubuntu 7.10 - based on what I've read) :
+```
+# udev rules file for Pololu SLOscope USB device (for udev 0.98 version)
+
+SUBSYSTEM!="usb_device", GOTO="pololu_rules_end"
+ACTION!="add", GOTO="pololu_rules_end"
+
+ATTRS{idVendor}=="1ffb", ATTRS{idProduct}=="0081", MODE="0666"
+
+LABEL="pololu_rules_end" 
+```
+
+(for Fedora 11 - this is tested, and really works) :
+```
+# udev rules file for Pololu SLOscope USB device (for udev 0.98 version)
+
+SUBSYSTEM!="usb", GOTO="pololu_rules_end"
+ACTION!="add", GOTO="pololu_rules_end"
+
+SYSFS{idVendor}=="1ffb", SYSFS{idProduct}=="0081", MODE="0666"
+
+LABEL="pololu_rules_end" 
+```
+
+
+Test this with : `udevtest /bus/usb/devices/7-1`, if the device is under `/dev/bus/usb/007` ...
+
+
+### Complaint ###
+
+And, yes, I'm aware that this should be done with ConsoleKit and HAL (and / or DeviceKit).  But don't you think I would have been able to figure it out if it were documented properly ??  YMMV.

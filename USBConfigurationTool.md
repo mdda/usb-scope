@@ -1,0 +1,28 @@
+## Introduction ##
+
+```
+$ ./usb-programmer-config --help
+Usage: usb-programmer-config [-h] [-g] [-q] [-d] [-s <num>] [-p <num>] [-a <str>] [-b <str>]
+  -h, --help        	displays help on the command line parameters
+  -g, --gui         	enables the GUI (not yet)
+  -q, --quiet       	don't show device settings
+  -d, --dump        	view current settings in parsable format
+  -s, --slo=<num>   	set SLO scope state: 0=off, 1=2A, 2=1A.1D
+  -p, --period=<num>	set SLO scope period (new reading every (period+1)/12 microseconds, normal=539)
+  -a, --line_a=<str>	set line A state : { i|input, 0|low, 1|high }
+  -b, --line_b=<str>	set line B state : { i|input, 0|low, 1|high }
+```
+
+NB: If the usb-programmer-config complains : 'USB error: error sending control message: Operation not permitted', then try rerunning it as root - something funky was happening on one of my machines without that.  This may be a 'udev' problem (to do with the permissions that linux gives the device nodes when it finds them).  More info soon.
+
+```
+# ./usb-programmer-config --slo=1 --line_a=i --line_b=0
+usb_set_debug: Setting debugging level to 2 (on)
+Pololu USB programmer : HW version 15, SW version 2.10
+  SLOscope mode : 2 analog inputs, 10KHz
+    Sampling every 45.000 us
+    Reference Voltage (1.024V) registers : 14400
+    Direction of external lines :
+      Line A : Input
+      Line B : Ouput Low
+```
